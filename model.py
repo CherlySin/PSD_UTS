@@ -51,8 +51,6 @@ def statis(audio):
 # Aplikasi Streamlit
 st.title("Deteksi Audio")
 st.write("Silahkan unggah lalu pilih audio yang ingin dideteksi.")
-st.write(normalisasi_zscore)
-st.write(knn_zscore)
 
 uploaded_file = st.file_uploader("Pilih file audio", type=["wav","mp3"])
 
