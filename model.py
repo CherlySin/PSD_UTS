@@ -4,7 +4,7 @@ import numpy as np
 import os
 # import librosa
 import pandas as pd
-from scipy.stats import skew, kurtosis, mode
+# from scipy.stats import skew, kurtosis, mode
 
 
 # Memuat model dan skalar yang telah dilatih
@@ -23,11 +23,11 @@ def statis(audio):
     max_value = np.max(y)
     min_value = np.min(y)
     median = np.median(y)
-    skewness = skew(y)
-    kurt = kurtosis(y)
+    # skewness = skew(y)
+    # kurt = kurtosis(y)
     q1 = np.percentile(y, 25)
     q3 = np.percentile(y, 75)
-    mode_value, _ = mode(y)
+    # mode_value, _ = mode(y)
     iqr = q3 - q1
 
 
@@ -45,7 +45,7 @@ def statis(audio):
     rms_kurtosis = kurtosis(y**2)
     rms_skew = skew(y**2)
 
-    return [mean, std_dev, max_value, min_value, median, skewness, kurt, q1, q3, mode_value, iqr, zcr_mean, zcr_median, zcr_std_dev, zcr_kurtosis, zcr_skew, rms, rms_median, rms_std_dev, rms_kurtosis, rms_skew]
+    return [mean, std_dev, max_value, min_value, median, skewness, kurt, q1, q3, mode_value, iqr, rms, rms_median, rms_std_dev, rms_kurtosis, rms_skew]
 
 
 # Aplikasi Streamlit
