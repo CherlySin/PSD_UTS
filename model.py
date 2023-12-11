@@ -2,9 +2,9 @@ import streamlit as st
 import pickle
 import numpy as np
 import os
-# import librosa
+import librosa
 import pandas as pd
-# from scipy.stats import skew, kurtosis, mode
+from scipy.stats import skew, kurtosis, mode
 
 
 # Memuat model dan skalar yang telah dilatih
@@ -23,20 +23,20 @@ def statis(audio):
     max_value = np.max(y)
     min_value = np.min(y)
     median = np.median(y)
-    # skewness = skew(y)
-    # kurt = kurtosis(y)
+    skewness = skew(y)
+    kurt = kurtosis(y)
     q1 = np.percentile(y, 25)
     q3 = np.percentile(y, 75)
-    # mode_value, _ = mode(y)
+    mode_value, _ = mode(y)
     iqr = q3 - q1
 
 
     # UNTUK MENGHITUNG NILAI ZCR
-    # zcr_mean = np.mean(librosa.feature.zero_crossing_rate(y=y))
-    # zcr_median = np.median(librosa.feature.zero_crossing_rate(y=y))
-    # zcr_std_dev = np.std(librosa.feature.zero_crossing_rate(y=y))
-    # zcr_kurtosis = kurtosis(librosa.feature.zero_crossing_rate(y=y)[0])
-    # zcr_skew = skew(librosa.feature.zero_crossing_rate(y=y)[0])
+    zcr_mean = np.mean(librosa.feature.zero_crossing_rate(y=y))
+    zcr_median = np.median(librosa.feature.zero_crossing_rate(y=y))
+    zcr_std_dev = np.std(librosa.feature.zero_crossing_rate(y=y))
+    zcr_kurtosis = kurtosis(librosa.feature.zero_crossing_rate(y=y)[0])
+    zcr_skew = skew(librosa.feature.zero_crossing_rate(y=y)[0])
 
     # UNTUK MENGHITUNG NILAI RMSE
     rms = np.sum(y**2) / len(y)
@@ -45,7 +45,7 @@ def statis(audio):
     rms_kurtosis = kurtosis(y**2)
     rms_skew = skew(y**2)
 
-    return [mean, std_dev, max_value, min_value, median, skewness, kurt, q1, q3, mode_value, iqr, rms, rms_median, rms_std_dev, rms_kurtosis, rms_skew]
+    return [mean, std_dev, max_value, min_value, median, skewness, kurt, q1, q3, mode_value, iqr, zcr_mean, zcr_median, zcr_std_dev, zcr_kurtosis, zcr_skew, rms, rms_median, rms_std_dev, rms_kurtosis, rms_skew]
 
 
 # Aplikasi Streamlit
@@ -64,8 +64,6 @@ if uploaded_file is not None:
             f.write(uploaded_file.getbuffer())
 
         # Hitung statistik untuk file audio yang diunggah
-        # Hitung statistik untuk file audio yang diunggah
-
         statistik = statis(audio_path)
         
         # Tampilkan tabel statistik
@@ -116,7 +114,6 @@ if uploaded_file is not None:
         label_emosi_zscore = knn_zscore.predict(data_ternormalisasi_zscore.reshape(1, -1))
 
         st.write("Emosi Terdeteksi (ZScore):", label_emosi_zscore)
-        # st.write("Emosi Terdeteksi (MinMax):", label_emosi_minmax)
 
         # Hapus file audio yang diunggah
         os.remove(audio_path)
