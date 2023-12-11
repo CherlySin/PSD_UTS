@@ -32,11 +32,11 @@ def statis(audio):
 
 
     # UNTUK MENGHITUNG NILAI ZCR
-    zcr_mean = np.mean(librosa.feature.zero_crossing_rate(y=y))
-    zcr_median = np.median(librosa.feature.zero_crossing_rate(y=y))
-    zcr_std_dev = np.std(librosa.feature.zero_crossing_rate(y=y))
-    zcr_kurtosis = kurtosis(librosa.feature.zero_crossing_rate(y=y)[0])
-    zcr_skew = skew(librosa.feature.zero_crossing_rate(y=y)[0])
+    # zcr_mean = np.mean(librosa.feature.zero_crossing_rate(y=y))
+    # zcr_median = np.median(librosa.feature.zero_crossing_rate(y=y))
+    # zcr_std_dev = np.std(librosa.feature.zero_crossing_rate(y=y))
+    # zcr_kurtosis = kurtosis(librosa.feature.zero_crossing_rate(y=y)[0])
+    # zcr_skew = skew(librosa.feature.zero_crossing_rate(y=y)[0])
 
     # UNTUK MENGHITUNG NILAI RMSE
     rms = np.sum(y**2) / len(y)
