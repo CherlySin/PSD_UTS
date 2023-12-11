@@ -1,5 +1,3 @@
-from sklearn.preprocessing import StandardScaler
-from sklearn.model_selection import train_test_split
 import streamlit as st
 import pickle
 import numpy as np
@@ -8,33 +6,13 @@ import librosa
 import pandas as pd
 from scipy.stats import skew, kurtosis, mode
 
-#Tahap Preprocessing
-# Membaca dataset
-data = pd.read_csv('data_sebelum_normalisasi.csv')
-
-# Pisahkan fitur (X) dan label (y)
-X = data.drop(['Label','Nama File'], axis=1)  # Ganti 'target_column' dengan nama kolom target
-y = data['Label']
-
-# split data into train and test sets
-X_train,X_test,y_train, y_test= train_test_split(X, y, random_state=42, test_size=0.2)
-
-# define scaler
-scaler = StandardScaler()
-
-
-# fit scaler on the training dataset
-scaler.fit(X_train)
-# scaler_Zscore = scaler.fit_transform(X)
-
-
 
 # Memuat model dan skalar yang telah dilatih
-with open('normalized_ZScore.pkl', 'rb') as file:
+with open('New_zscore.pkl', 'rb') as file:
     normalisasi_zscore = pickle.load(file)
 
 # Memuat model KNN untuk kategori emosi dengan normalisasi ZScore
-with open('knn_terbaik_zscore.pkl', 'rb') as file:
+with open('New_knn_zscore.pkl', 'rb') as file:
     knn_zscore = pickle.load(file)
 # Definisi fungsi statis
 def statis(audio):
@@ -73,8 +51,8 @@ def statis(audio):
 # Aplikasi Streamlit
 st.title("Deteksi Audio")
 st.write("Silahkan unggah lalu pilih audio yang ingin dideteksi.")
-st.write(knn_zscore)
 st.write(normalisasi_zscore)
+st.write(knn_zscore)
 
 uploaded_file = st.file_uploader("Pilih file audio", type=["wav","mp3"])
 
@@ -134,19 +112,10 @@ if uploaded_file is not None:
         statistik = statis(audio_path)
 
         # Normalisasi data menggunakan ZScore
-        data_ternormalisasi_zscore = scaler.transform(np.array([statistik]))
-
-        print("Type of knn_zscore:", type(knn_zscore))
+        data_ternormalisasi_zscore = normalisasi_zscore.transform([statistik])[0]
 
         # Prediksi label emosi dengan normalisasi ZScore
         label_emosi_zscore = knn_zscore.predict(data_ternormalisasi_zscore.reshape(1, -1))
-
-
-        # Normalisasi data menggunakan MinMax
-        # data_ternormalisasi_minmax = minmaxscaler.transform([statistik])[0]
-
-        # # Prediksi label emosi dengan normalisasi MinMax
-        # label_emosi_minmax = knn_minmax.predict(data_ternormalisasi_minmax.reshape(1, -1))[0]
 
         st.write("Emosi Terdeteksi (ZScore):", label_emosi_zscore)
         # st.write("Emosi Terdeteksi (MinMax):", label_emosi_minmax)
