@@ -2,7 +2,7 @@ import streamlit as st
 import pickle
 import numpy as np
 import os
-import librosa
+# import librosa
 import pandas as pd
 from scipy.stats import skew, kurtosis, mode
 
